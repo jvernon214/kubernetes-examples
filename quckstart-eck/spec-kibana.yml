@@ -1,0 +1,15 @@
+apiVersion: kibana.k8s.elastic.co/v1alpha1
+kind: Kibana
+metadata:
+  name: quickstart
+spec:
+  version: 7.1.0
+  nodeCount: 1
+  # References the metadata for the Elasticsearch App
+  elasticsearchRef:
+    name: quickstart
+  # Create external IP for access to the elasticsearch service
+  http:
+      service:
+        spec:
+          type: LoadBalancer

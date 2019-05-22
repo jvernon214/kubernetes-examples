@@ -1,0 +1,37 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1alpha1
+kind: Elasticsearch
+metadata:
+  name: quickstart
+spec:
+  version: 7.1.0
+  nodes:
+  # Configure Master Nodes
+  - nodeCount: 3
+    config:
+      node.master: true
+      node.data: false
+      node.ingest: false
+  # Configure Data Nodes
+  - nodeCount: 2
+    config:
+      node.master: false
+      node.data: true
+      node.ingest: false
+  # Configure Ingest Node
+  - nodeCount: 1
+    config:
+      node.master: false
+      node.data: false
+      node.ingest: true
+  # Create external IP for access to the elasticsearch service
+  http:
+    service:
+      spec:
+        type: LoadBalancer
+    # Uncomment this section(from tls to - ip) once ES Service is deployed and the External IP is generated.
+    # Get service ip with `kubectl get service`
+    # After pasting it in rerun `kubectl apply -f ./<filename.yml>`
+    # tls:
+    #   selfSignedCertificate:
+    #     subjectAltNames:
+    #     - ip: <ES Service External IP>
